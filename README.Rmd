@@ -12,12 +12,11 @@ knitr::opts_chunk$set(
 )
 ```
 
-# R package `metaEB`
+# R package `MetaIntegration`
 
 # Ensemble Meta-Prediction Framework to Integrate Multiple Regression Models
 
-`r badger::badge_devel("umich-biostatistics/metaEB", "blue")` `r badger::badge_code_size("umich-biostatistics/metaEB")`
-`r badger::badge_doi("", "orange") `
+`r badger::badge_devel("umich-biostatistics/MetaIntegration", "blue")` `r badger::badge_code_size("umich-biostatistics/MetaIntegration")`
 
 ## Overview
 
@@ -33,13 +32,13 @@ install.packages('devtools')
 
 ```{r, eval = FALSE}
 # install SEIRfansy from Github:
-devtools::install_github('umich-biostatistics/metaEB') 
+devtools::install_github('umich-biostatistics/MetaIntegration') 
 ```
 
 Once installed, load the package:
 
 ```{r, eval = TRUE}
-library(metaEB)
+library(MetaIntegration)
 ```
 
 ## Example Usage

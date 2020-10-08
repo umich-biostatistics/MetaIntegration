@@ -1,5 +1,5 @@
 Type: Package
-Package: metaEB
+Package: MetaIntegration
 Title: Ensemble Meta-Prediction Framework to Integrate Multiple Regression Models
 Version: 0.1.0.9000
 Description: An Ensemble meta-prediction framework to integrate multiple regression 
@@ -20,9 +20,10 @@ Depends:
 Imports:
     Rsolnp,
     corpcor,
-    MASS
-URL: https://github.com/umich-biostatistics/metaEB
-BugReports: https://github.com/umich-biostatistics/metaEB/issues
+    MASS,
+    knitr
+URL: https://github.com/umich-biostatistics/MetaIntegration
+BugReports: https://github.com/umich-biostatistics/MetaIntegration/issues
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
 VignetteBuilder: knitr

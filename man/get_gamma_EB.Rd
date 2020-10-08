@@ -15,9 +15,11 @@ get_gamma_EB(gamma_I, gamma_CML, asyV.I)
 }
 \value{
 a list with:
-gamma_I: Full model parameter estimates using the internal data only (MLE from direct regression)
-gamma_CML: Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)
-gamma_EB: The empircal Bayes estimate of the full model (i.e. a weighted average of gamma_I and gamma_CML) (Estes et al. 2017)
+\itemize{
+\item{"gamma_I" }{Full model parameter estimates using the internal data only (MLE from direct regression)}
+\item{"gamma_CML" }{Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)}
+\item{"gamma_EB" }{The empirical Bayes estimate of the full model (i.e. a weighted average of gamma_I and gamma_CML) (Estes et al. 2017)}
+}
 }
 \description{
 Calculate the empirical Bayes (EB) estimates
@@ -64,13 +66,19 @@ fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'
 gamma.I = coef(fit.gamma.I)
 
 #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
-gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
-gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
+gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
+                          BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
+                          BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
 #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
 gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 
 #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
-asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], BInt=data.n$B,  gammaHatInt=gamma.I, betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
+asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], 
+                          BInt=data.n$B,  gammaHatInt=gamma.I, 
+                          betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
 asyV.I = asy.CML[['asyV.I']]                     
 
 #Get the empirical Bayes (EB) estimates

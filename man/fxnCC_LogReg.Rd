@@ -70,7 +70,8 @@ names(data.m) = c('Y', 'X', 'B')
 data.m[,c('X', 'B')] = MASS::mvrnorm(m, rep(0,2), diag(0.7,2)+0.3)
 data.m$Y = rbinom(m, 1, expit(-1 - 0.5*data.m$X + 0.5*data.m$B))
 
-#fit Y|X to obtain the external beta estimates, save the beta estiamtes and the corresponsing estimated variance 
+#fit Y|X to obtain the external beta estimates, save the beta estiamtes and the 
+# corresponsing estimated variance 
 fit.E = glm(Y ~ X, data = data.m, family = binomial(link='logit'))
 beta.E = coef(fit.E)
 names(beta.E) = c('int', 'X')

@@ -47,11 +47,13 @@ model uncertainty in the algorithm; if FALSE then ignoring the external model un
 }
 \value{
 a list containing:
-asyV.I: Variance of gamma_I (the direct regression parameter estimates using the internal data only)
-asyV.CML: Variance of gamma_CML (the CML estiamtes \link{Chatterjee et al. 2016})
-asyCov.CML: Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj
-asyCov.CML.I: Covariance between gamma_I and gamma_CML
-ExtraTerm: the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)
+\itemize{
+\item{"asyV.I" }{Variance of gamma_I (the direct regression parameter estimates using the internal data only)}
+\item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes \link{Chatterjee et al. 2016})}
+\item{"asyCov.CML" }{Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj}
+\item{"asyCov.CML.I" }{Covariance between gamma_I and gamma_CML}
+\item{"ExtraTerm" }{the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)}
+}
 }
 \description{
 Asymptotic variance-covariance matrix for gamma_Int and gamma_CML for linear regression (continuous outcome Y)
@@ -98,8 +100,12 @@ fit.gamma.I = lm(Y ~ X1 + X2 + B, data = data.n)
 gamma.I = coef(fit.gamma.I)
 
 #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
-gamma.CML1 = fxnCC_LinReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
-gamma.CML2 = fxnCC_LinReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
+gamma.CML1 = fxnCC_LinReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
+                          BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+gamma.CML2 = fxnCC_LinReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
+                          BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
 #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
 gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 
