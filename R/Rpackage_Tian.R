@@ -534,12 +534,14 @@ fxnCC_LinReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 #' asyCov.CML12 = asy.CML[['asyCov.CML']][['12']]    #covariance of gamma.CML1 and gamma.CML2
 #' 
 #' @return a list containing:
-#' asyV.I: Variance of gamma_I (the direct regression parameter estimates using the internal data only)
-#' asyV.CML: Variance of gamma_CML (the CML estiamtes [Chatterjee et al. 2016])
-#' asyCov.CML: Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj
-#' asyCov.CML.I: Covariance between gamma_I and gamma_CML
-#' ExtraTerm: the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)
-#'
+#' \itemize{
+#'   \item{"asyV.I" }{Variance of gamma_I (the direct regression parameter estimates using the internal data only)}
+#'   \item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes [Chatterjee et al. 2016])}
+#'   \item{"asyCov.CML" }{Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj}
+#'   \item{"asyCov.CML.I" }{Covariance between gamma_I and gamma_CML}
+#'   \item{"ExtraTerm" }{the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)}
+#' }
+#' 
 #' @export
 #'
 asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_list, CovExt_list, rho, ExUncertainty){
@@ -772,11 +774,18 @@ asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' model uncertainty in the algorithm; if FALSE then ignoring the external model uncertainty
 #'
 #' @return a list containing:
-#' asyV.I: Variance of gamma_I (the direct regression parameter estimates using the internal data only)
-#' asyV.CML: Variance of gamma_CML (the CML estiamtes [Chatterjee et al. 2016])
-#' asyCov.CML: Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj
-#' asyCov.CML.I: Covariance between gamma_I and gamma_CML
-#' ExtraTerm: the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)
+#' \itemize{
+#'   \item{"asyV.I" }{Variance of gamma_I (the direct regression parameter estimates using the internal data only)}
+#'   \item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes [Chatterjee et al. 2016])}
+#'   \item{"asyCov.CML" }{Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj}
+#'   \item{"asyCov.CML.I" }{Covariance between gamma_I and gamma_CML}
+#'   \item{"ExtraTerm" }{the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)}
+#' }
+# asyV.I: Variance of gamma_I (the direct regression parameter estimates using the internal data only)
+# asyV.CML: Variance of gamma_CML (the CML estiamtes [Chatterjee et al. 2016])
+# asyCov.CML: Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj
+# asyCov.CML.I: Covariance between gamma_I and gamma_CML
+# ExtraTerm: the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)
 #'
 #' @examples 
 #' # Full model: Y|X1, X2, B
@@ -1069,9 +1078,11 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' @param asyV.I Variance-covariance matrix of gamma_I from function asympVar_LinReg[['asyV.I']] or asympVar_LogReg[['asyV.I']]
 #'
 #' @return a list with:
-#' gamma_I: Full model parameter estimates using the internal data only (MLE from direct regression)
-#' gamma_CML: Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)
-#' gamma_EB: The empircal Bayes estimate of the full model (i.e. a weighted average of gamma_I and gamma_CML) (Estes et al. 2017)
+#' \itemize{
+#'   \item{"gamma_I" }{Full model parameter estimates using the internal data only (MLE from direct regression)}
+#'   \item{"gamma_CML" }{Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)}
+#'   \item{"gamma_EB" }{The empirical Bayes estimate of the full model (i.e. a weighted average of gamma_I and gamma_CML) (Estes et al. 2017)}
+#' }
 #' 
 #' @references 
 #' #' Chatterjee, N., Chen, Y.-H., P.Maas and Carroll, R. J. (2016). Constrained maximum 

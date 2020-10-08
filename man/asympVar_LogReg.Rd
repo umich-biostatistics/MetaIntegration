@@ -51,6 +51,13 @@ uncertainty in the algorithm; if FALSE then ignoring the external model uncertai
 }
 \value{
 a list containing:
+\itemize{
+\item{"asyV.I" }{Variance of gamma_I (the direct regression parameter estimates using the internal data only)}
+\item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes \link{Chatterjee et al. 2016})}
+\item{"asyCov.CML" }{Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj}
+\item{"asyCov.CML.I" }{Covariance between gamma_I and gamma_CML}
+\item{"ExtraTerm" }{the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)}
+}
 asyV.I: Variance of gamma_I (the direct regression parameter estimates using the internal data only)
 asyV.CML: Variance of gamma_CML (the CML estiamtes \link{Chatterjee et al. 2016})
 asyCov.CML: Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj

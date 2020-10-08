@@ -24,7 +24,14 @@ importFrom(patchwork, plot_annotation)
 importFrom("stats", "quantile", "rmultinom")
 importFrom("utils", "tail")
 
-export(SEIRfansy)
-export(SEIRfansy.predict)
-S3method(plot, SEIRfansy)
-S3method(plot, SEIRfansyPredict)
+
+
+export(expit)
+export(fxnCC_LogReg)
+export(fxnCC_LinReg)
+export(asympVar_LogReg)
+export(asympVar_LinReg)
+export(get_gamma_EB)
+export(get_var_EB)
+export(get_OCW)
+export(get_SCLearner)
