@@ -9,7 +9,8 @@
 # Function 8: Obtain the proposed Optimal covariate-Weighted (OCW) estimates, package Rsolnp is required
 # Function 9: Obtain the proposed Selective Coefficient-Learner (SC-Learner) estimates
 
-
+# visible bindings for global variables
+n <- gamma.I <- NULL
 
 ####################################
 ########## Function 1: Expit function
@@ -68,7 +69,7 @@ expit <- function(x){
 #' @param XInt X covariates that are used in the external models - Do not include intercept
 #' @param BInt Newly added B covariates that are not included in the external models
 #' @param betaHatExt External parameter estimates of the reduced model
-#' @param gammaHatExt Full model parameter estimates using the internal data only
+#' @param gammaHatInt Full model parameter estimates using the internal data only
 #' @param n internal data sample size
 #' @param tol convergence criteria e.g. 1e-6
 #' @param maxIter Maximum number of iterations to reach convergence e.g. 400
@@ -259,7 +260,7 @@ fxnCC_LogReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 #' @param XInt X covariates that are used in the external models - Do not include intercept
 #' @param BInt Newly added B covariates that are not included in the external models
 #' @param betaHatExt External parameter estimates of the reduced model
-#' @param gammaHatExt Full model parameter estimates using the internal data only
+#' @param gammaHatInt Full model parameter estimates using the internal data only
 #' @param n internal data sample size
 #' @param tol convergence criteria e.g. 1e-6
 #' @param maxIter Maximum number of iterations to reach convergence e.g. 400
@@ -511,14 +512,18 @@ fxnCC_LinReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 #' fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'))
 #' gamma.I = coef(fit.gamma.I)
 #' 
-#' #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
+#' #Get CML estimates using internal data and the beta estimates from the external 
+#' # model 1 and 2, respectively
 #' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
 #'                           BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
-#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400,factor=1)[["gammaHat"]]
 #' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
 #'                           BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
-#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400, factor=1)[["gammaHat"]]
+#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) 
+#' # as gamma.I and gamma.CML1
 #' gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 #' 
 #' #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
@@ -526,24 +531,25 @@ fxnCC_LinReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 #'                           p=2,
 #'                           q=4, 
 #'                           YInt=data.n$Y, 
-#'                           XInt=data.n[,c('X1','X2')], #covariates that appeared in at least one external model
+#'                           XInt=data.n[,c('X1','X2')], #covariates that appeared 
+#'                           in at least one external model
 #'                           BInt=data.n$B,  #covariates that not used in any of the external models
 #'                           gammaHatInt=gamma.I, 
 #'                           betaHatExt_list=betaHatExt_list, 
 #'                           CovExt_list=CovExt_list, 
 #'                           rho=rho, 
 #'                           ExUncertainty=TRUE)
-#' asyV.I = asy.CML[['asyV.I']]                      #variance of gamma.I
-#' asyV.CML1 = asy.CML[['asyV.CML']][[1]]            #variance of gamma.CML1
-#' asyV.CML2 = asy.CML[['asyV.CML']][[2]]            #variance of gamma.CML2
-#' asyCov.CML1.I = asy.CML[['asyCov.CML.I']][[1]]    #covariance of gamma.CML1 and gamma.I
-#' asyCov.CML2.I = asy.CML[['asyCov.CML.I']][[2]]    #covariance of gamma.CML2 and gamma.I
-#' asyCov.CML12 = asy.CML[['asyCov.CML']][['12']]    #covariance of gamma.CML1 and gamma.CML2
+#' asyV.I = asy.CML[["asyV.I"]]                      #variance of gamma.I
+#' asyV.CML1 = asy.CML[["asyV.CML"]][[1]]            #variance of gamma.CML1
+#' asyV.CML2 = asy.CML[["asyV.CML"]][[2]]            #variance of gamma.CML2
+#' asyCov.CML1.I = asy.CML[["asyCov.CML.I"]][[1]]    #covariance of gamma.CML1 and gamma.I
+#' asyCov.CML2.I = asy.CML[["asyCov.CML.I"]][[2]]    #covariance of gamma.CML2 and gamma.I
+#' asyCov.CML12 = asy.CML[["asyCov.CML"]][["12"]]    #covariance of gamma.CML1 and gamma.CML2
 #' 
 #' @return a list containing:
 #' \itemize{
 #'   \item{"asyV.I" }{Variance of gamma_I (the direct regression parameter estimates using the internal data only)}
-#'   \item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes [Chatterjee et al. 2016])}
+#'   \item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes (Chatterjee et al. 2016))}
 #'   \item{"asyCov.CML" }{Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj}
 #'   \item{"asyCov.CML.I" }{Covariance between gamma_I and gamma_CML}
 #'   \item{"ExtraTerm" }{the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)}
@@ -772,7 +778,8 @@ asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' @param BInt Newly added B covariates that are not included in the external models
 #' @param gammaHatInt Internal parameter estimates of the full model using the internal data
 #' @param betaHatExt_list a list of k items, each item is a vector of the external 
-#' parameter estimates (beta). Vector name is required for each covariate, and has to be as consistent as the full model 
+#' parameter estimates (beta). Vector name is required for each covariate, and has 
+#' to be as consistent as the full model 
 #' @param CovExt_list a list of k items, each item is the variance-covariance matrix 
 #' of the external parameter estimates (beta) of the reduced model
 #' @param rho a list of k items, each item is the sample size ratio, n/m (the 
@@ -783,7 +790,7 @@ asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' @return a list containing:
 #' \itemize{
 #'   \item{"asyV.I" }{Variance of gamma_I (the direct regression parameter estimates using the internal data only)}
-#'   \item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes [Chatterjee et al. 2016])}
+#'   \item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes (Chatterjee et al. 2016))}
 #'   \item{"asyCov.CML" }{Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj}
 #'   \item{"asyCov.CML.I" }{Covariance between gamma_I and gamma_CML}
 #'   \item{"ExtraTerm" }{the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)}
@@ -816,7 +823,8 @@ asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' data.m[,c('X1', 'X2', 'B')] = MASS::mvrnorm(m, rep(0,3), diag(0.7,3)+0.3)
 #' data.m$Y = rnorm(m, -1 - 0.5*data.m$X1 - 0.5*data.m$X2 + 0.5*data.m$B, 1)
 #' 
-#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and the corresponsing estimated variance 
+#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and the 
+#' # corresponding estimated variance 
 #' fit.E1 = lm(Y ~ X1, data = data.m)
 #' fit.E2 = lm(Y ~ X2, data = data.m)
 #' beta.E1 = coef(fit.E1)
@@ -835,14 +843,18 @@ asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' fit.gamma.I = lm(Y ~ X1 + X2 + B, data = data.n)
 #' gamma.I = coef(fit.gamma.I)
 #' 
-#' #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
+#' #Get CML estimates using internal data and the beta estimates from the external 
+#' # model 1 and 2, respectively
 #' gamma.CML1 = fxnCC_LinReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
 #'                           BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
-#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400,factor=1)[["gammaHat"]]
 #' gamma.CML2 = fxnCC_LinReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
 #'                           BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
-#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400, factor=1)[["gammaHat"]]
+#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) 
+#' # as gamma.I and gamma.CML1
 #' gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 #' 
 #' #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
@@ -850,19 +862,20 @@ asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #'                           p=2,
 #'                           q=4, 
 #'                           YInt=data.n$Y, 
-#'                           XInt=data.n[,c('X1','X2')], #covariates that appeared in at least one external model
+#'                           XInt=data.n[,c('X1','X2')], 
+#'                           #covariates that appeared in at least one external model
 #'                           BInt=data.n$B,  #covariates that not used in any of the external models
 #'                           gammaHatInt=gamma.I, 
 #'                           betaHatExt_list=betaHatExt_list, 
 #'                           CovExt_list=CovExt_list, 
 #'                           rho=rho, 
 #'                           ExUncertainty=TRUE)
-#' asyV.I = asy.CML[['asyV.I']]                      #variance of gamma.I
-#' asyV.CML1 = asy.CML[['asyV.CML']][[1]]            #variance of gamma.CML1
-#' asyV.CML2 = asy.CML[['asyV.CML']][[2]]            #variance of gamma.CML2
-#' asyCov.CML1.I = asy.CML[['asyCov.CML.I']][[1]]    #covariance of gamma.CML1 and gamma.I
-#' asyCov.CML2.I = asy.CML[['asyCov.CML.I']][[2]]    #covariance of gamma.CML2 and gamma.I
-#' asyCov.CML12 = asy.CML[['asyCov.CML']][['12']]    #covariance of gamma.CML1 and gamma.CML2
+#' asyV.I = asy.CML[["asyV.I"]]                      #variance of gamma.I
+#' asyV.CML1 = asy.CML[["asyV.CML"]][[1]]            #variance of gamma.CML1
+#' asyV.CML2 = asy.CML[["asyV.CML"]][[2]]            #variance of gamma.CML2
+#' asyCov.CML1.I = asy.CML[["asyCov.CML.I"]][[1]]    #covariance of gamma.CML1 and gamma.I
+#' asyCov.CML2.I = asy.CML[["asyCov.CML.I"]][[2]]    #covariance of gamma.CML2 and gamma.I
+#' asyCov.CML12 = asy.CML[["asyCov.CML"]][["12"]]    #covariance of gamma.CML1 and gamma.CML2
 #' 
 #'
 asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_list, CovExt_list, rho, ExUncertainty){
@@ -1086,7 +1099,7 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' 
 #' @param gamma_I Full model parameter estimates using the internal data only (MLE from direct regression)
 #' @param gamma_CML Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)
-#' @param asyV.I Variance-covariance matrix of gamma_I from function asympVar_LinReg[['asyV.I']] or asympVar_LogReg[['asyV.I']]
+#' @param asyV.I Variance-covariance matrix of gamma_I from function asympVar_LinReg[["asyV.I"]] or asympVar_LogReg[["asyV.I"]]
 #'
 #' @return a list with:
 #' \itemize{
@@ -1108,8 +1121,10 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' # Full model: Y|X1, X2, B
 #' # Reduced model 1: Y|X1 of sample size m1
 #' # Reduced model 2: Y|X2 of sample size m2
-#' # (X1, X2, B) follows normal distribution with mean zero, variance one and correlation 0.3
-#' # Y|X1, X2, B follows Bernoulli[expit(-1-0.5*X1-0.5*X2+0.5*B)], where expit(x)=exp(x)/[1+exp(x)]
+#' # (X1, X2, B) follows normal distribution with mean zero, variance one and 
+#' #  correlation 0.3
+#' # Y|X1, X2, B follows Bernoulli[expit(-1-0.5*X1-0.5*X2+0.5*B)], 
+#' #  where expit(x)=exp(x)/[1+exp(x)]
 #' set.seed(2333)
 #' n = 1000
 #' data.n = data.frame(matrix(ncol = 4, nrow = n))
@@ -1126,7 +1141,8 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' data.m[,c('X1', 'X2', 'B')] = MASS::mvrnorm(m, rep(0,3), diag(0.7,3)+0.3)
 #' data.m$Y = rbinom(m, 1, expit(-1 - 0.5*data.m$X1 - 0.5*data.m$X2 + 0.5*data.m$B))
 #' 
-#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and the corresponsing estimated variance 
+#' #fit Y|X to obtain the external beta estimates, save the beta estimates and the 
+#' # corresponding estimated variance 
 #' fit.E1 = glm(Y ~ X1, data = data.m, family = binomial(link='logit'))
 #' fit.E2 = glm(Y ~ X2, data = data.m, family = binomial(link='logit'))
 #' beta.E1 = coef(fit.E1)
@@ -1145,21 +1161,26 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'))
 #' gamma.I = coef(fit.gamma.I)
 #' 
-#' #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
+#' #Get CML estimates using internal data and the beta estimates from the external 
+#' # model 1 and 2, respectively
 #' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
 #'                           BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
-#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400,factor=1)[["gammaHat"]]
 #' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
 #'                           BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
-#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400, factor=1)[["gammaHat"]]
+#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) 
+#' # as gamma.I and gamma.CML1
 #' gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 #' 
 #' #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
 #' asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], 
 #'                           BInt=data.n$B,  gammaHatInt=gamma.I, 
-#'                           betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
-#' asyV.I = asy.CML[['asyV.I']]                     
+#'                           betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, 
+#'                           rho=rho, ExUncertainty=TRUE)
+#' asyV.I = asy.CML[["asyV.I"]]                     
 #' 
 #' #Get the empirical Bayes (EB) estimates
 #' gamma.EB1 = get_gamma_EB(gamma_I=gamma.I, gamma_CML=gamma.CML1, asyV.I=asyV.I)[['gamma.EB']]
@@ -1303,7 +1324,8 @@ get_gamma_EB <- function(gamma_I, gamma_CML, asyV.I){
 #' data.m[,c('X1', 'X2', 'B')] = MASS::mvrnorm(m, rep(0,3), diag(0.7,3)+0.3)
 #' data.m$Y = rbinom(m, 1, expit(-1 - 0.5*data.m$X1 - 0.5*data.m$X2 + 0.5*data.m$B))
 #' 
-#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and the corresponsing estimated variance 
+#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and 
+#' # the corresponsing estimated variance 
 #' fit.E1 = glm(Y ~ X1, data = data.m, family = binomial(link='logit'))
 #' fit.E2 = glm(Y ~ X2, data = data.m, family = binomial(link='logit'))
 #' beta.E1 = coef(fit.E1)
@@ -1322,18 +1344,26 @@ get_gamma_EB <- function(gamma_I, gamma_CML, asyV.I){
 #' fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'))
 #' gamma.I = coef(fit.gamma.I)
 #' 
-#' #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
-#' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
-#' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+#' #Get CML estimates using internal data and the beta estimates from the external 
+#' # model 1 and 2, respectively
+#' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
+#'              BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, gammaHatInt=gamma.I, 
+#'              n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+#' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
+#'              BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, gammaHatInt=gamma.I, 
+#'              n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
+#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) 
+#' # as gamma.I and gamma.CML1
 #' gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 #' 
 #' #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
-#' asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], BInt=data.n$B,  gammaHatInt=gamma.I, betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
+#' asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], 
+#'                           BInt=data.n$B,  gammaHatInt=gamma.I, betaHatExt_list=betaHatExt_list, 
+#'                           CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
 #' 
 #' #Get the empirical Bayes (EB) estimates
-#' gamma.EB1 = get_gamma_EB(gamma.I, gamma.CML1, asy.CML[['asyV.I']])[['gamma.EB']]
-#' gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[['asyV.I']])[['gamma.EB']]
+#' gamma.EB1 = get_gamma_EB(gamma.I, gamma.CML1, asy.CML[["asyV.I"]])[["gamma.EB"]]
+#' gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[["asyV.I"]])[["gamma.EB"]]
 #' 
 #' #Get the asymptotic variance of the EB estimates
 #' V.EB = get_var_EB(k=2, 
@@ -1351,8 +1381,8 @@ get_gamma_EB <- function(gamma_I, gamma_CML, asyV.I){
 #' @export
 #' 
 get_var_EB <- function(k, q, gamma.CML, asy.CML, seed=2333, nsim=2000){
-  library(corpcor)
-  library(MASS)
+  #library(corpcor)
+  #library(MASS)
   
   ######Define new variables from inputed list asy.CML
   asyV.I = asy.CML[['asyV.I']]              #variance of gamma.I
@@ -1582,7 +1612,8 @@ get_var_EB <- function(k, q, gamma.CML, asy.CML, seed=2333, nsim=2000){
 #' data.m[,c('X1', 'X2', 'B')] = MASS::mvrnorm(m, rep(0,3), diag(0.7,3)+0.3)
 #' data.m$Y = rbinom(m, 1, expit(-1 - 0.5*data.m$X1 - 0.5*data.m$X2 + 0.5*data.m$B))
 #' 
-#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and the corresponsing estimated variance 
+#' #fit Y|X to obtain the external beta estimates, save the beta estimates and 
+#' # the corresponding estimated variance 
 #' fit.E1 = glm(Y ~ X1, data = data.m, family = binomial(link='logit'))
 #' fit.E2 = glm(Y ~ X2, data = data.m, family = binomial(link='logit'))
 #' beta.E1 = coef(fit.E1)
@@ -1601,23 +1632,35 @@ get_var_EB <- function(k, q, gamma.CML, asy.CML, seed=2333, nsim=2000){
 #' fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'))
 #' gamma.I = coef(fit.gamma.I)
 #' 
-#' #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
-#' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
-#' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+#' #Get CML estimates using internal data and the beta estimates from the external 
+#' # model 1 and 2, respectively
+#' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
+#'                           BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400,factor=1)[["gammaHat"]]
+#' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
+#'                           BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400, factor=1)[["gammaHat"]]
+#' #It's important to reorder gamma.CML2 so that it follows the order 
+#' # (X1, X2, X3, B) as gamma.I and gamma.CML1
 #' gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 #' 
 #' #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
-#' asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], BInt=data.n$B,  gammaHatInt=gamma.I, betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
+#' asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], 
+#'                           BInt=data.n$B,  gammaHatInt=gamma.I, betaHatExt_list=betaHatExt_list, 
+#'                           CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
 #' 
 #' #Get the empirical Bayes (EB) estimates
-#' gamma.EB1 = get_gamma_EB(gamma.I, gamma.CML1, asy.CML[['asyV.I']])[['gamma.EB']]
-#' gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[['asyV.I']])[['gamma.EB']]
+#' gamma.EB1 = get_gamma_EB(gamma.I, gamma.CML1, asy.CML[["asyV.I"]])[["gamma.EB"]]
+#' gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[["asyV.I"]])[["gamma.EB"]]
 #' 
 #' #Get the asymptotic variance of the EB estimates
-#' V.EB = get_var_EB(k=2, q=4, gamma.CML=c(gamma.CML1, gamma.CML2), asy.CML=asy.CML, seed=2333, nsim=2000)
+#' V.EB = get_var_EB(k=2, q=4, gamma.CML=c(gamma.CML1, gamma.CML2), 
+#'                   asy.CML=asy.CML, seed=2333, nsim=2000)
 #' 
-#' #Get the OCW estimates,  the corresponding variance-covariance matrix of the estimates and the weights of gamma.EB's
+#' #Get the OCW estimates,  the corresponding variance-covariance matrix of the 
+#' # estimates and the weights of gamma.EB's
 #' get_OCW(k=2, 
 #'         q=4, 
 #'         data.XB=data.n[,c('X1','X2','B')], 
@@ -1772,7 +1815,7 @@ get_OCW = function(k, q, data.XB, gamma.EB, V.EB){
 #' 
 #' @param k number of external models
 #' @param q total number of covariates (X,B) including the intercept (i.e. q=ncol(X)+ncol(B)+1)
-#' @param predictor.matrix a predictor matrix (q rows by k columns) that specifies 
+#' @param pred.matrix a predictor matrix (q rows by k columns) that specifies 
 #' the full model variables in the rows, and the external models on the columns. 
 #' An entry of 0 means that the row variable is NOT used in the column external model; 1 represents that it is used.
 #' @param gamma.EB bind all k EB estimates in order (q rows by k columns), i.e. cbind(gamma.EB1,...,gamma.EBk)
@@ -1800,7 +1843,8 @@ get_OCW = function(k, q, data.XB, gamma.EB, V.EB){
 #' data.m[,c('X1', 'X2', 'B')] = MASS::mvrnorm(m, rep(0,3), diag(0.7,3)+0.3)
 #' data.m$Y = rbinom(m, 1, expit(-1 - 0.5*data.m$X1 - 0.5*data.m$X2 + 0.5*data.m$B))
 #' 
-#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and the corresponsing estimated variance 
+#' #fit Y|X to obtain the external beta estimates, save the beta estiamtes and 
+#' # the corresponsing estimated variance 
 #' fit.E1 = glm(Y ~ X1, data = data.m, family = binomial(link='logit'))
 #' fit.E2 = glm(Y ~ X2, data = data.m, family = binomial(link='logit'))
 #' beta.E1 = coef(fit.E1)
@@ -1819,21 +1863,32 @@ get_OCW = function(k, q, data.XB, gamma.EB, V.EB){
 #' fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'))
 #' gamma.I = coef(fit.gamma.I)
 #' 
-#' #Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
-#' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
-#' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+#' #Get CML estimates using internal data and the beta estimates from the external 
+#' # model 1 and 2, respectively
+#' gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
+#'                           BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400,factor=1)[["gammaHat"]]
+#' gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
+#'                           BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
+#'                           gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+#'                           maxIter=400, factor=1)[["gammaHat"]]
+#' #It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) 
+#' # as gamma.I and gamma.CML1
 #' gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 #' 
 #' #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
-#' asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], BInt=data.n$B,  gammaHatInt=gamma.I, betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
+#' asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], 
+#'                           BInt=data.n$B,  gammaHatInt=gamma.I, betaHatExt_list=betaHatExt_list, 
+#'                           CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
 #' 
 #' #Get the empirical Bayes (EB) estimates
-#' gamma.EB1 = get_gamma_EB(gamma.I, gamma.CML1, asy.CML[['asyV.I']])[['gamma.EB']]
-#' gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[['asyV.I']])[['gamma.EB']]
+#' gamma.EB1 = get_gamma_EB(gamma.I, gamma.CML1, asy.CML[["asyV.I"]])[["gamma.EB"]]
+#' gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[["asyV.I"]])[["gamma.EB"]]
 #' 
 #' #Get the asymptotic variance of the EB estimates
-#' V.EB = get_var_EB(k=2, q=4, gamma.CML=c(gamma.CML1, gamma.CML2), asy.CML=asy.CML, seed=2333, nsim=2000)
+#' V.EB = get_var_EB(k=2, q=4, gamma.CML=c(gamma.CML1, gamma.CML2), 
+#'                   asy.CML=asy.CML, seed=2333, nsim=2000)
 #' 
 #' #Get the SC-Learner estimates and the corresponding variance-covariance matrix
 #' pred.matrix = matrix(c(1,1,1,0,
@@ -1957,8 +2012,3 @@ get_SCLearner <- function(k, q, pred.matrix, gamma.EB, V.EB){
 #               gamma.EB=cbind(gamma.EB1, gamma.EB2),
 #               V.EB)
 # ################## End of Example ##############################################################
-
-
-
-
-

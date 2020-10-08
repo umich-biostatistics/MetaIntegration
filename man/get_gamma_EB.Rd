@@ -11,7 +11,7 @@ get_gamma_EB(gamma_I, gamma_CML, asyV.I)
 
 \item{gamma_CML}{Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)}
 
-\item{asyV.I}{Variance-covariance matrix of gamma_I from function asympVar_LinReg[\link{'asyV.I'}] or asympVar_LogReg[\link{'asyV.I'}]}
+\item{asyV.I}{Variance-covariance matrix of gamma_I from function asympVar_LinReg[\link{"asyV.I"}] or asympVar_LogReg[\link{"asyV.I"}]}
 }
 \value{
 a list with:
@@ -28,8 +28,10 @@ Calculate the empirical Bayes (EB) estimates
 # Full model: Y|X1, X2, B
 # Reduced model 1: Y|X1 of sample size m1
 # Reduced model 2: Y|X2 of sample size m2
-# (X1, X2, B) follows normal distribution with mean zero, variance one and correlation 0.3
-# Y|X1, X2, B follows Bernoulli[expit(-1-0.5*X1-0.5*X2+0.5*B)], where expit(x)=exp(x)/[1+exp(x)]
+# (X1, X2, B) follows normal distribution with mean zero, variance one and 
+#  correlation 0.3
+# Y|X1, X2, B follows Bernoulli[expit(-1-0.5*X1-0.5*X2+0.5*B)], 
+#  where expit(x)=exp(x)/[1+exp(x)]
 set.seed(2333)
 n = 1000
 data.n = data.frame(matrix(ncol = 4, nrow = n))
@@ -46,7 +48,8 @@ names(data.m) = c('Y', 'X1', 'X2', 'B')
 data.m[,c('X1', 'X2', 'B')] = MASS::mvrnorm(m, rep(0,3), diag(0.7,3)+0.3)
 data.m$Y = rbinom(m, 1, expit(-1 - 0.5*data.m$X1 - 0.5*data.m$X2 + 0.5*data.m$B))
 
-#fit Y|X to obtain the external beta estimates, save the beta estiamtes and the corresponsing estimated variance 
+#fit Y|X to obtain the external beta estimates, save the beta estimates and the 
+# corresponding estimated variance 
 fit.E1 = glm(Y ~ X1, data = data.m, family = binomial(link='logit'))
 fit.E2 = glm(Y ~ X2, data = data.m, family = binomial(link='logit'))
 beta.E1 = coef(fit.E1)
@@ -65,21 +68,26 @@ rho = list(Ext1 = n/m1, Ext2 = n/m2)
 fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'))
 gamma.I = coef(fit.gamma.I)
 
-#Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
+#Get CML estimates using internal data and the beta estimates from the external 
+# model 1 and 2, respectively
 gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
                           BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
-                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+                          maxIter=400,factor=1)[["gammaHat"]]
 gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
                           BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
-                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+                          maxIter=400, factor=1)[["gammaHat"]]
+#It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) 
+# as gamma.I and gamma.CML1
 gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 
 #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
 asy.CML = asympVar_LogReg(k=2, p=2,q=4, YInt=data.n$Y, XInt=data.n[,c('X1','X2')], 
                           BInt=data.n$B,  gammaHatInt=gamma.I, 
-                          betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, rho=rho, ExUncertainty=TRUE)
-asyV.I = asy.CML[['asyV.I']]                     
+                          betaHatExt_list=betaHatExt_list, CovExt_list=CovExt_list, 
+                          rho=rho, ExUncertainty=TRUE)
+asyV.I = asy.CML[["asyV.I"]]                     
 
 #Get the empirical Bayes (EB) estimates
 gamma.EB1 = get_gamma_EB(gamma_I=gamma.I, gamma_CML=gamma.CML1, asyV.I=asyV.I)[['gamma.EB']]

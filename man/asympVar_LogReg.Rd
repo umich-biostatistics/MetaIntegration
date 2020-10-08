@@ -53,7 +53,7 @@ uncertainty in the algorithm; if FALSE then ignoring the external model uncertai
 a list containing:
 \itemize{
 \item{"asyV.I" }{Variance of gamma_I (the direct regression parameter estimates using the internal data only)}
-\item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes \link{Chatterjee et al. 2016})}
+\item{"asyV.CML" }{Variance of gamma_CML (the CML estiamtes (Chatterjee et al. 2016))}
 \item{"asyCov.CML" }{Covariance between two different CML estimates, gamma_CMLi and gamma_CMLj}
 \item{"asyCov.CML.I" }{Covariance between gamma_I and gamma_CML}
 \item{"ExtraTerm" }{the extra variance when ExUncertainty == TRUE (i.e. the external uncertainty is considered in the algorithm)}
@@ -104,14 +104,18 @@ rho = list(Ext1 = n/m1, Ext2 = n/m2)
 fit.gamma.I = glm(Y ~ X1 + X2 + B, data = data.n, family = binomial(link='logit'))
 gamma.I = coef(fit.gamma.I)
 
-#Get CML estimates using internal data and the beta estimates from the external model 1 and 2, respectively
+#Get CML estimates using internal data and the beta estimates from the external 
+# model 1 and 2, respectively
 gamma.CML1 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X1, 
                           BInt=cbind(data.n$X2, data.n$B), betaHatExt=beta.E1, 
-                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400,factor=1)[["gammaHat"]]
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+                          maxIter=400,factor=1)[["gammaHat"]]
 gamma.CML2 = fxnCC_LogReg(p=2, q=4, YInt=data.n$Y, XInt=data.n$X2, 
                           BInt=cbind(data.n$X1, data.n$B), betaHatExt=beta.E2, 
-                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, maxIter=400, factor=1)[["gammaHat"]]
-#It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) as gamma.I and gamma.CML1
+                          gammaHatInt=gamma.I, n=nrow(data.n), tol=1e-8, 
+                          maxIter=400, factor=1)[["gammaHat"]]
+#It's important to reorder gamma.CML2 so that it follows the order (X1, X2, X3, B) 
+# as gamma.I and gamma.CML1
 gamma.CML2 = c(gamma.CML2[1], gamma.CML2[3], gamma.CML2[2], gamma.CML2[4])
 
 #Get Variance-covariance matricx of c(gamma.I, gamma.CML1, gamma.CML2)
@@ -119,19 +123,20 @@ asy.CML = asympVar_LogReg(k=2,
                           p=2,
                           q=4, 
                           YInt=data.n$Y, 
-                          XInt=data.n[,c('X1','X2')], #covariates that appeared in at least one external model
+                          XInt=data.n[,c('X1','X2')], #covariates that appeared 
+                          in at least one external model
                           BInt=data.n$B,  #covariates that not used in any of the external models
                           gammaHatInt=gamma.I, 
                           betaHatExt_list=betaHatExt_list, 
                           CovExt_list=CovExt_list, 
                           rho=rho, 
                           ExUncertainty=TRUE)
-asyV.I = asy.CML[['asyV.I']]                      #variance of gamma.I
-asyV.CML1 = asy.CML[['asyV.CML']][[1]]            #variance of gamma.CML1
-asyV.CML2 = asy.CML[['asyV.CML']][[2]]            #variance of gamma.CML2
-asyCov.CML1.I = asy.CML[['asyCov.CML.I']][[1]]    #covariance of gamma.CML1 and gamma.I
-asyCov.CML2.I = asy.CML[['asyCov.CML.I']][[2]]    #covariance of gamma.CML2 and gamma.I
-asyCov.CML12 = asy.CML[['asyCov.CML']][['12']]    #covariance of gamma.CML1 and gamma.CML2
+asyV.I = asy.CML[["asyV.I"]]                      #variance of gamma.I
+asyV.CML1 = asy.CML[["asyV.CML"]][[1]]            #variance of gamma.CML1
+asyV.CML2 = asy.CML[["asyV.CML"]][[2]]            #variance of gamma.CML2
+asyCov.CML1.I = asy.CML[["asyCov.CML.I"]][[1]]    #covariance of gamma.CML1 and gamma.I
+asyCov.CML2.I = asy.CML[["asyCov.CML.I"]][[2]]    #covariance of gamma.CML2 and gamma.I
+asyCov.CML12 = asy.CML[["asyCov.CML"]][["12"]]    #covariance of gamma.CML1 and gamma.CML2
 
 }
 \references{

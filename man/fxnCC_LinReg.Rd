@@ -31,6 +31,8 @@ fxnCC_LinReg(
 
 \item{betaHatExt}{External parameter estimates of the reduced model}
 
+\item{gammaHatInt}{Full model parameter estimates using the internal data only}
+
 \item{n}{internal data sample size}
 
 \item{tol}{convergence criteria e.g. 1e-6}
@@ -40,8 +42,6 @@ fxnCC_LinReg(
 \item{factor}{the step-halving factor between 0 and 1, if factor=1 then
 newton-raphson method; decrease if algorithm cannot converge given the
 maximum iterations}
-
-\item{gammaHatExt}{Full model parameter estimates using the internal data only}
 }
 \value{
 gammaHat, in the order (intercept, XInt, BInt)
