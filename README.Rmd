@@ -244,3 +244,5 @@ get_SCLearner(k=3,
 
 ### Current Suggested Citation
 
+Gu, T., Taylor, J.M.G. and Mukherjee, B. (2020). An ensemble meta-prediction framework to integrate multiple regression 
+models into a current study. Manuscript in preparation.

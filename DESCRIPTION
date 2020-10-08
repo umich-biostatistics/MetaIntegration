@@ -2,7 +2,9 @@ Type: Package
 Package: metaEB
 Title: Ensemble Meta-Prediction Framework to Integrate Multiple Regression Models
 Version: 0.1.0.9000
-Description: An Ensemble meta-prediction framework to integrate multiple regression models into a current study. Chatterjee et al (2016) <doi:https://doi.org/1>.
+Description: An Ensemble meta-prediction framework to integrate multiple regression 
+    models into a current study. Gu, T., Taylor, J.M.G. and Mukherjee, B. (2020). 
+    Manuscript in preparation.
 Authors@R: c(
     person(given = "Tian", family = "Gu", role = c("aut"), email = "gutian@umich.edu"),
     person(given = "Bhramar", family = "Mukherjee", role = c("aut"), email = "bhramar@umich.edu"),
