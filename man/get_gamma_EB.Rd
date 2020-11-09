@@ -11,7 +11,7 @@ get_gamma_EB(gamma_I, gamma_CML, asyV.I)
 
 \item{gamma_CML}{Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)}
 
-\item{asyV.I}{Variance-covariance matrix of gamma_I from function asympVar_LinReg[\link{"asyV.I"}] or asympVar_LogReg[\link{"asyV.I"}]}
+\item{asyV.I}{Variance-covariance matrix of gamma_I from function asympVar_LinReg() or asympVar_LogReg()}
 }
 \value{
 a list with:
@@ -25,6 +25,7 @@ a list with:
 Calculate the empirical Bayes (EB) estimates
 }
 \examples{
+\donttest{
 # Full model: Y|X1, X2, B
 # Reduced model 1: Y|X1 of sample size m1
 # Reduced model 2: Y|X2 of sample size m2
@@ -92,7 +93,7 @@ asyV.I = asy.CML[["asyV.I"]]
 #Get the empirical Bayes (EB) estimates
 gamma.EB1 = get_gamma_EB(gamma_I=gamma.I, gamma_CML=gamma.CML1, asyV.I=asyV.I)[['gamma.EB']]
 gamma.EB2 = get_gamma_EB(gamma_I=gamma.I, gamma_CML=gamma.CML2, asyV.I=asyV.I)[['gamma.EB']]
-
+}
 
 }
 \references{

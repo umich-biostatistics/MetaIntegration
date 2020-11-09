@@ -63,6 +63,7 @@ a list containing:
 Asymptotic variance-covariance matrix for gamma_Int and gamma_CML for logistic regression (binary outcome Y)
 }
 \examples{
+\donttest{
 # Full model: Y|X1, X2, B
 # Reduced model 1: Y|X1 of sample size m1
 # Reduced model 2: Y|X2 of sample size m2
@@ -124,7 +125,7 @@ asy.CML = asympVar_LogReg(k=2,
                           q=4, 
                           YInt=data.n$Y, 
                           XInt=data.n[,c('X1','X2')], #covariates that appeared 
-                          in at least one external model
+                          # in at least one external model
                           BInt=data.n$B,  #covariates that not used in any of the external models
                           gammaHatInt=gamma.I, 
                           betaHatExt_list=betaHatExt_list, 
@@ -137,6 +138,7 @@ asyV.CML2 = asy.CML[["asyV.CML"]][[2]]            #variance of gamma.CML2
 asyCov.CML1.I = asy.CML[["asyCov.CML.I"]][[1]]    #covariance of gamma.CML1 and gamma.I
 asyCov.CML2.I = asy.CML[["asyCov.CML.I"]][[2]]    #covariance of gamma.CML2 and gamma.I
 asyCov.CML12 = asy.CML[["asyCov.CML"]][["12"]]    #covariance of gamma.CML1 and gamma.CML2
+}
 
 }
 \references{

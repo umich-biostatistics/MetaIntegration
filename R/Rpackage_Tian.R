@@ -471,6 +471,7 @@ fxnCC_LinReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 #' uncertainty in the algorithm; if FALSE then ignoring the external model uncertainty
 #' 
 #' @examples 
+#' \donttest{
 #' # Full model: Y|X1, X2, B
 #' # Reduced model 1: Y|X1 of sample size m1
 #' # Reduced model 2: Y|X2 of sample size m2
@@ -532,7 +533,7 @@ fxnCC_LinReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 #'                           q=4, 
 #'                           YInt=data.n$Y, 
 #'                           XInt=data.n[,c('X1','X2')], #covariates that appeared 
-#'                           in at least one external model
+#'                           # in at least one external model
 #'                           BInt=data.n$B,  #covariates that not used in any of the external models
 #'                           gammaHatInt=gamma.I, 
 #'                           betaHatExt_list=betaHatExt_list, 
@@ -545,6 +546,7 @@ fxnCC_LinReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 #' asyCov.CML1.I = asy.CML[["asyCov.CML.I"]][[1]]    #covariance of gamma.CML1 and gamma.I
 #' asyCov.CML2.I = asy.CML[["asyCov.CML.I"]][[2]]    #covariance of gamma.CML2 and gamma.I
 #' asyCov.CML12 = asy.CML[["asyCov.CML"]][["12"]]    #covariance of gamma.CML1 and gamma.CML2
+#' }
 #' 
 #' @return a list containing:
 #' \itemize{
@@ -879,6 +881,7 @@ asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' 
 #'
 asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_list, CovExt_list, rho, ExUncertainty){
+  n = length(YInt)
   if(is.null(names(XInt)) == TRUE){
     XiMatrix_all = as.matrix(cbind(int = 1, X = XInt), n, p)
   }else{ 
@@ -1099,7 +1102,7 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' 
 #' @param gamma_I Full model parameter estimates using the internal data only (MLE from direct regression)
 #' @param gamma_CML Full model parameter estimates using the internal data and the external reduced model parameters (Chatterjee et al. 2016)
-#' @param asyV.I Variance-covariance matrix of gamma_I from function asympVar_LinReg[["asyV.I"]] or asympVar_LogReg[["asyV.I"]]
+#' @param asyV.I Variance-covariance matrix of gamma_I from function asympVar_LinReg() or asympVar_LogReg()
 #'
 #' @return a list with:
 #' \itemize{
@@ -1118,6 +1121,7 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' Manuscript in preparation.
 #'
 #' @examples 
+#' \donttest{
 #' # Full model: Y|X1, X2, B
 #' # Reduced model 1: Y|X1 of sample size m1
 #' # Reduced model 2: Y|X2 of sample size m2
@@ -1185,7 +1189,7 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
 #' #Get the empirical Bayes (EB) estimates
 #' gamma.EB1 = get_gamma_EB(gamma_I=gamma.I, gamma_CML=gamma.CML1, asyV.I=asyV.I)[['gamma.EB']]
 #' gamma.EB2 = get_gamma_EB(gamma_I=gamma.I, gamma_CML=gamma.CML2, asyV.I=asyV.I)[['gamma.EB']]
-#'
+#' }
 #'
 #' @export 
 #' 
