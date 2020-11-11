@@ -1299,6 +1299,7 @@ get_gamma_EB <- function(gamma_I, gamma_CML, asyV.I){
 #' @param k number of external models
 #' @param q total number of covariates (X,B) including the intercept (i.e. q=ncol(X)+ncol(B)+1)
 #' @param gamma.CML stack all k CML estimates in order, i.e. c(gamma.CML1,...,gamma.CMLk)
+#' @param gamma.I parameter estimates of the full model
 #' @param asy.CML a list of the estimated asymtotic variance-covariance matrix of 
 #' c(gamma_CML, gamma_I) from the output of function asympVar_LinReg() or asympVar_LogReg()
 #' @param seed specify seed for simulation
@@ -1373,6 +1374,7 @@ get_gamma_EB <- function(gamma_I, gamma_CML, asyV.I){
 #' V.EB = get_var_EB(k=2, 
 #'                   q=4, 
 #'                   gamma.CML=c(gamma.CML1, gamma.CML2), 
+#'                   gamma.I = gamma.I,
 #'                   asy.CML=asy.CML, 
 #'                   seed=2333, 
 #'                   nsim=2000)
@@ -1384,7 +1386,7 @@ get_gamma_EB <- function(gamma_I, gamma_CML, asyV.I){
 #'
 #' @export
 #' 
-get_var_EB <- function(k, q, gamma.CML, asy.CML, seed=2333, nsim=2000){
+get_var_EB <- function(k, q, gamma.CML, gamma.I, asy.CML, seed=2333, nsim=2000){
   #library(corpcor)
   #library(MASS)
   
@@ -1661,7 +1663,7 @@ get_var_EB <- function(k, q, gamma.CML, asy.CML, seed=2333, nsim=2000){
 #' 
 #' #Get the asymptotic variance of the EB estimates
 #' V.EB = get_var_EB(k=2, q=4, gamma.CML=c(gamma.CML1, gamma.CML2), 
-#'                   asy.CML=asy.CML, seed=2333, nsim=2000)
+#'                   gamma.I = gamma.I, asy.CML=asy.CML, seed=2333, nsim=2000)
 #' 
 #' #Get the OCW estimates,  the corresponding variance-covariance matrix of the 
 #' # estimates and the weights of gamma.EB's
@@ -1892,7 +1894,7 @@ get_OCW = function(k, q, data.XB, gamma.EB, V.EB){
 #' 
 #' #Get the asymptotic variance of the EB estimates
 #' V.EB = get_var_EB(k=2, q=4, gamma.CML=c(gamma.CML1, gamma.CML2), 
-#'                   asy.CML=asy.CML, seed=2333, nsim=2000)
+#'                   gamma.I = gamma.I, asy.CML=asy.CML, seed=2333, nsim=2000)
 #' 
 #' #Get the SC-Learner estimates and the corresponding variance-covariance matrix
 #' pred.matrix = matrix(c(1,1,1,0,

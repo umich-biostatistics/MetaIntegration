@@ -4,7 +4,7 @@
 \alias{get_var_EB}
 \title{Using simulation to obtain the asymptotic variance-covariance matrix of gamma_EB, package corpcor and MASS are required}
 \usage{
-get_var_EB(k, q, gamma.CML, asy.CML, seed = 2333, nsim = 2000)
+get_var_EB(k, q, gamma.CML, gamma.I, asy.CML, seed = 2333, nsim = 2000)
 }
 \arguments{
 \item{k}{number of external models}
@@ -12,6 +12,8 @@ get_var_EB(k, q, gamma.CML, asy.CML, seed = 2333, nsim = 2000)
 \item{q}{total number of covariates (X,B) including the intercept (i.e. q=ncol(X)+ncol(B)+1)}
 
 \item{gamma.CML}{stack all k CML estimates in order, i.e. c(gamma.CML1,...,gamma.CMLk)}
+
+\item{gamma.I}{parameter estimates of the full model}
 
 \item{asy.CML}{a list of the estimated asymtotic variance-covariance matrix of
 c(gamma_CML, gamma_I) from the output of function asympVar_LinReg() or asympVar_LogReg()}
@@ -93,6 +95,7 @@ gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[["asyV.I"]])[["gamma.EB"]]
 V.EB = get_var_EB(k=2, 
                   q=4, 
                   gamma.CML=c(gamma.CML1, gamma.CML2), 
+                  gamma.I = gamma.I,
                   asy.CML=asy.CML, 
                   seed=2333, 
                   nsim=2000)

@@ -22,7 +22,7 @@ install.packages('devtools')
 ```
 
 ``` r
-# install SEIRfansy from Github:
+# install the package from Github:
 devtools::install_github('umich-biostatistics/MetaIntegration') 
 ```
 
@@ -191,6 +191,7 @@ gamma\_EB, package corpcor and MASS are required.
 V.EB = get_var_EB(k=3, 
                   q=5, 
                   gamma.CML=c(gamma.CML1, gamma.CML2, gamma.CML3), 
+                  gamma.I = gamma.I,
                   asy.CML=asy.CML, 
                   seed=2333, 
                   nsim=2000)

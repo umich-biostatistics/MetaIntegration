@@ -92,7 +92,7 @@ gamma.EB2 = get_gamma_EB(gamma.I, gamma.CML2, asy.CML[["asyV.I"]])[["gamma.EB"]]
 
 #Get the asymptotic variance of the EB estimates
 V.EB = get_var_EB(k=2, q=4, gamma.CML=c(gamma.CML1, gamma.CML2), 
-                  asy.CML=asy.CML, seed=2333, nsim=2000)
+                  gamma.I = gamma.I, asy.CML=asy.CML, seed=2333, nsim=2000)
 
 #Get the OCW estimates,  the corresponding variance-covariance matrix of the 
 # estimates and the weights of gamma.EB's
