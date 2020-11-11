@@ -1,7 +1,7 @@
 Type: Package
 Package: MetaIntegration
 Title: Ensemble Meta-Prediction Framework to Integrate Multiple Regression Models
-Version: 0.1.0.9000
+Version: 0.1.1
 Description: An Ensemble meta-prediction framework to integrate multiple regression 
     models into a current study. Gu, T., Taylor, J.M.G. and Mukherjee, B. (2020). 
     Manuscript in preparation.
@@ -26,4 +26,3 @@ URL: https://github.com/umich-biostatistics/MetaIntegration
 BugReports: https://github.com/umich-biostatistics/MetaIntegration/issues
 RoxygenNote: 7.1.1
 Roxygen: list(markdown = TRUE)
-VignetteBuilder: knitr
