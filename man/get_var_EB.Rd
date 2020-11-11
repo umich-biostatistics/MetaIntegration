@@ -13,7 +13,7 @@ get_var_EB(k, q, gamma.CML, gamma.I, asy.CML, seed = 2333, nsim = 2000)
 
 \item{gamma.CML}{stack all k CML estimates in order, i.e. c(gamma.CML1,...,gamma.CMLk)}
 
-\item{gamma.I}{parameter estimates of the full model}
+\item{gamma.I}{direct regression estimates using the internal data only}
 
 \item{asy.CML}{a list of the estimated asymtotic variance-covariance matrix of
 c(gamma_CML, gamma_I) from the output of function asympVar_LinReg() or asympVar_LogReg()}

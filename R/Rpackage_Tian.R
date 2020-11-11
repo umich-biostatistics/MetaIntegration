@@ -1299,7 +1299,7 @@ get_gamma_EB <- function(gamma_I, gamma_CML, asyV.I){
 #' @param k number of external models
 #' @param q total number of covariates (X,B) including the intercept (i.e. q=ncol(X)+ncol(B)+1)
 #' @param gamma.CML stack all k CML estimates in order, i.e. c(gamma.CML1,...,gamma.CMLk)
-#' @param gamma.I parameter estimates of the full model
+#' @param gamma.I direct regression estimates using the internal data only
 #' @param asy.CML a list of the estimated asymtotic variance-covariance matrix of 
 #' c(gamma_CML, gamma_I) from the output of function asympVar_LinReg() or asympVar_LogReg()
 #' @param seed specify seed for simulation
