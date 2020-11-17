@@ -1,10 +1,10 @@
 Type: Package
 Package: MetaIntegration
-Title: Ensemble Meta-Prediction Framework to Integrate Multiple Regression Models
+Title: Ensemble Meta-Prediction Framework
 Version: 0.1.1
-Description: An Ensemble meta-prediction framework to integrate multiple regression 
-    models into a current study. Gu, T., Taylor, J.M.G. and Mukherjee, B. (2020). 
-    <arXiv:2010.09971>
+Description: An ensemble meta-prediction framework to integrate multiple regression 
+    models into a current study. Gu, T., Taylor, J.M.G. and Mukherjee, B. (2020) 
+    <arXiv:2010.09971>.
     A meta-analysis framework along with two weighted estimators as the ensemble 
     of empirical Bayes estimators, which combines the estimates from the different 
     external models. The proposed framework is flexible and robust in the ways 
