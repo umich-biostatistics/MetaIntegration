@@ -1,7 +1,7 @@
 Type: Package
 Package: MetaIntegration
 Title: Ensemble Meta-Prediction Framework
-Version: 0.1.1
+Version: 0.1.2
 Description: An ensemble meta-prediction framework to integrate multiple regression 
     models into a current study. Gu, T., Taylor, J.M.G. and Mukherjee, B. (2020) 
     <arXiv:2010.09971>.
