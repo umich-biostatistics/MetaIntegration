@@ -14,13 +14,13 @@ knitr::opts_chunk$set(
 
 # R package `MetaIntegration`
 
-# Ensemble Meta-Prediction Framework to Integrate Multiple Regression Models
+# Ensemble Meta-Inference Framework to Integrate Multiple Regression Models
 
 `r badger::badge_devel("umich-biostatistics/MetaIntegration", "blue")` `r badger::badge_code_size("umich-biostatistics/MetaIntegration")`
 
 ## Overview
 
-This `R` package is an ensemble meta-prediction framework to integrate multiple regression models into a current study.
+This `R` package is an ensemble meta-inference framework to integrate multiple regression models into a current study.
 
 ## Installation
 
@@ -113,7 +113,7 @@ rho = list(Ext1 = n/m1, Ext2 = n/m2, Ext3 = n/m3)
 
 ## fxnCC_LogReg()
 
-Constraint maximum likelihood (CML) method for logistic regression (binary outcome Y).
+Constrained maximum likelihood (CML) method for logistic regression (binary outcome Y).
 
 ```{r}
 fit.gamma.I = glm(Y ~ X1 + X2 + X3 + B, data = data.n, family = binomial(link='logit'))
@@ -244,5 +244,5 @@ get_SCLearner(k=3,
 
 ### Current Suggested Citation
 
-Gu, T., Taylor, J.M.G. and Mukherjee, B. (2020). An ensemble meta-prediction framework to integrate multiple regression 
-models into a current study. Manuscript in preparation.
+Gu, T., Taylor, J.M.G. and Mukherjee, B. (2021). An ensemble meta-inference framework to integrate multiple regression 
+models into a current study. Accepted for publication in Biostatistics. Preprint at arXiv:2010.09971 
