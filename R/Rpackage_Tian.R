@@ -562,11 +562,15 @@ fxnCC_LinReg <- function(p, q, YInt, XInt, BInt, betaHatExt, gammaHatInt, n, tol
 asympVar_LogReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_list, CovExt_list, rho, ExUncertainty){
   n = length(YInt)
   if(is.null(names(XInt)) == TRUE){
-    XiMatrix_all = as.matrix(cbind(int = 1, X = XInt), n, p)
+        XiMatrix_all = as.matrix(cbind(int = 1, X = XInt), n, p)
   }else{ 
-    XiMatrix_all = as.matrix(cbind(int = 1, XInt), n, p)
+        XiMatrix_all = as.matrix(cbind(int = 1, XInt), n, p)
   }
-  XBiMatrix = as.matrix(cbind(1,XInt,BInt), n, q)
+  if(is.null(BInt)){
+        XBiMatrix = as.matrix(cbind(1,XInt), n, q)
+  }else{
+        XBiMatrix = as.matrix(cbind(1,XInt,BInt), n, q)   
+  }
   gammaHatInt = as.matrix(gammaHatInt, q, 1)
   
   ###########Calculate pExt = Pr(Y=1|Xs) for each external beta with different X's
@@ -887,7 +891,11 @@ asympVar_LinReg <- function(k, p, q, YInt, XInt, BInt, gammaHatInt, betaHatExt_l
   }else{ 
     XiMatrix_all = as.matrix(cbind(int = 1, XInt), n, p)
   }
-  XBiMatrix = as.matrix(cbind(1,XInt,BInt), n, q)
+  if(is.null(BInt)){
+        XBiMatrix = as.matrix(cbind(1,XInt), n, q)
+  }else{
+        XBiMatrix = as.matrix(cbind(1,XInt,BInt), n, q)   
+  }
   gammaHatInt = as.matrix(gammaHatInt, q, 1)
   yhatIntMatrix = XBiMatrix %*% gammaHatInt
   sigma2Int = 1/n*sum((YInt-yhatIntMatrix)^2)
