@@ -1,7 +1,7 @@
 Type: Package
 Package: MetaIntegration
 Title: Ensemble Meta-Inference Framework
-Version: 0.1.2
+Version: 0.1.3
 Description: An ensemble meta-inference framework to integrate multiple regression 
     models into a current study. Gu, T., Taylor, J.M.G. and Mukherjee, B. (2021) 
     <arXiv:2010.09971>.
@@ -18,7 +18,7 @@ Description: An ensemble meta-inference framework to integrate multiple regressi
 Authors@R: c(
     person(given = "Tian", family = "Gu", role = c("aut"), email = "gutian@umich.edu"),
     person(given = "Bhramar", family = "Mukherjee", role = c("aut"), email = "bhramar@umich.edu"),
-    person(given = "Michael", family = "Kleinsasser", role = c("cre"), email = "mkleinsa@umich.edu")
+    person(given = "Michael", family = "Kleinsasser", role = c("cre"), email = "biostat-cran-manager@umich.edu")
     )
 Maintainer: Michael Kleinsasser <mkleinsa@umich.edu>
 License: GPL-2
